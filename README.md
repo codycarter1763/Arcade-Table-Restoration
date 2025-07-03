@@ -115,9 +115,15 @@ To set color for a certain LED.
 
 Other alternatives include [FastLED](https://fastled.io/). , but for my project, NeoPixel worked just fine. 
 
+## Web UI to Change RGB Presets
+Since the ESP32 has onboard WiFi and Bluetooth capabilities, I decided to create an HTML web page from scratch and have it displayed to your device when you want to change what preset will display on the RGB strip when the physical buttons are pushed. I gave the UI a retro Pacman theme with custom fonts and animations for a truly unique project. I used pico.css framework for customzied widgets and menu animations and this link [here](https://codepen.io/cobra_winfrey/pen/pLKevR) for the basis of the Pacman animation. 
+
+Keep in mind the UI is not laggy in real life, I just used a gif for the repository. 
+![Recording 2025-07-03 131957](https://github.com/user-attachments/assets/2e48048f-a456-48af-8825-bf7015630cec)
+
 
 ## Number Dial
-The number dials on the side of the machine comprise of a solenoid valve that you apply a short pulse to advance the number. The display itself is fully mechanical and is self-carrying. To control solenoids, these required 24 volts DC pulse to flip to the next number. So, I connected a relay board that works off of 5V logic, added a UF4007 diode to the solenoid to prevent current and voltage spikes from damaging the relay, and added a boost converter to convert 5 volts to 24 volts. </br>
+The number dials on the side of the machine comprise of a solenoid valve that you apply a short pulse to advance the number. The display itself is fully mechanical and is self-carrying. To control solenoids, these required 24 volts DC pulse to flip to the next number. So, I connected a relay board that works off of 5V logic, added a UF4007 diode to the solenoid to prevent current and voltage spikes from damaging the relay, and added a boost converter to convert 5 volts to 24 volts. Only one of the three worked so I decided to make use of it by incrementing when an RGB preset button is pressed.</br>
 
 <p align="left">
   <img src="https://github.com/user-attachments/assets/445550db-177d-403d-bed7-c8be23f4c321" width="48%" height="48%" alt="Left Image">
@@ -126,7 +132,9 @@ The number dials on the side of the machine comprise of a solenoid valve that yo
 
 ![image](https://github.com/user-attachments/assets/70c0a905-1198-4e68-b87a-f6b80c97f8cf)
 
+# Software for ESP32
+I used VSCode and PlatformIO for development of the HTML file and Arduino code. PlatformIO allows me to easily debug and test new changes though their included frameworks. The code is very extensive so check out the source code in my repository to see explanantions and content. 
 
-## ESP32 Code
+## How To Upload Code Using PlatformIO and SPIFFS
 
 

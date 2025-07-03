@@ -116,7 +116,9 @@ To set color for a certain LED.
 Other alternatives include [FastLED](https://fastled.io/). , but for my project, NeoPixel worked just fine. 
 
 ## Web UI to Change RGB Presets
-Since the ESP32 has onboard WiFi and Bluetooth capabilities, I decided to create an HTML web page from scratch and have it displayed to your device when you want to change what preset will display on the RGB strip when the physical buttons are pushed. I gave the UI a retro Pacman theme with custom fonts and animations for a truly unique project. I used pico.css framework for customzied widgets and menu animations and this link [here](https://codepen.io/cobra_winfrey/pen/pLKevR) for the basis of the Pacman animation. 
+Since the ESP32 has onboard WiFi and Bluetooth capabilities, I decided to create an HTML web page from scratch and have it displayed to your device when you want to change what preset will display on the RGB strip when the physical buttons are pushed. The HTML webpage also displays what presets were set on a previous gaming session and will display it on its respective button. 
+
+I gave the UI a retro Pacman theme with custom fonts and animations for a truly unique project. I used pico.css framework for customzied widgets and menu animations and this link [here](https://codepen.io/cobra_winfrey/pen/pLKevR) for the basis of the Pacman animation. 
 
 Keep in mind the UI is not laggy in real life, I just used a gif for the repository. 
 ![Recording 2025-07-03 131957](https://github.com/user-attachments/assets/2e48048f-a456-48af-8825-bf7015630cec)
@@ -136,5 +138,41 @@ The number dials on the side of the machine comprise of a solenoid valve that yo
 I used VSCode and PlatformIO for development of the HTML file and Arduino code. PlatformIO allows me to easily debug and test new changes though their included frameworks. The code is very extensive so check out the source code in my repository to see explanantions and content. 
 
 ## How To Upload Code Using PlatformIO and SPIFFS
+SPIFFS is a file system that allows you to upload HTML, CSS, JS, config files, and more that you need for your application. For this project, this came in handy to develop an HTML webpage seperate from the Arduino backend and allowed for easy expansion of features.
 
+**Keep in mind that if you upload this repository code, don't move the files in the "data" folder and "src" around or all of the font and framework dependencies won't be uploaded.**
+![image](https://github.com/user-attachments/assets/c8dac4bf-71d6-4278-a590-4e75580e2cd6)
 
+## PlatformIO
+1. Open VSCode
+2. Open extensions
+3. Install PlatformIO IDE ![image](https://github.com/user-attachments/assets/254ccaa4-827c-44ac-aa7d-65e2a29db3a7)
+
+4. Open this once installed ![image](https://github.com/user-attachments/assets/12fb879c-ca25-41cb-b6fe-9f07cc224a6d)
+
+5. Create a new project, name it, choose your board, and set your framework accordingly if using C++ or Arduino
+6. Check your platformio.ini file for configuration, it is dependent on your project, but this is mine ![image](https://github.com/user-attachments/assets/0820e3c7-e33f-4383-8ffe-e24732c4acb2)
+7. Start coding!
+
+## SPIFFS
+SPIFFS is already included in PlatformIO and only required a few steps to start uploading.
+1. Create a folder in your project folder called "data", this will be where your HTML and font files will be stored
+2. Open PlatformIO icon
+3. Look for PROJECT TASKS
+4. Scroll down and click Build Filesystem Image
+5. After building, click Upload Filesystem Image
+6. Files in the data folder should be uploaded to the board!
+
+## Uploading Arduino Code
+1. After using SPIFFS to upload the "data" folder, open your main.cpp file in "src"
+2. Click this drop down, build, then upload ![image](https://github.com/user-attachments/assets/5d1274b5-e20a-481f-ba23-9940cf450547)
+3. All files should be uploaded and working!
+
+## Accessing HTML Webpage
+1. Open up your wifi settings and connect to the ssid set in the main.cpp file
+2. Enter your password
+3. Open up a browser and type in "http://IP-Address-In-Serial-Monitor"
+4. Wait for it to load and you should be able to see the animations, plus saved RGB presets from previous gaming sessions that were stored in the ESP32 non-volatile flash.
+
+# Closing
+Hope you learned something from this repository and may my example help with inspiration for your project!

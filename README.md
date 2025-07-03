@@ -25,7 +25,7 @@ There is not much information out there about Corona and their arcade tables, so
 Winners Circle was a horse racing game based off the original board released by Corona in 1981 where you bet on seven horses over three races to win the most cash. Check out the video of some original gameplay [here](https://www.youtube.com/watch?v=5p2Suuga1zI).
 
 # How It Started
-This arcade table has been sitting in a garage in the middle of humid hot Louisiana and been through the 2016 floods. So when I recieved the table it was in very poor conditions, even with the missing parts it needed some serious TLC. My first steps was just to open up the machine, clean out dust and dirt, and see what I was working with and see what I can salvage for te final product. 
+This arcade table has been sitting in a garage in the middle of humid hot Louisiana and been through the 2016 floods. So when I recieved the table it was in very poor conditions, even with the missing parts it needed some serious TLC. My first steps was just to open up the machine, clean out dust and dirt, and see what I was working with and see what I can salvage for the final product. I also removed some heavy transformers from the unit that werent being used.  
 
 <p align="left">
   <img src="https://github.com/user-attachments/assets/7bff3182-4f9b-4c27-88b1-3b5b6bf3308f" width="48%" height="48%" alt="Left Image">
@@ -42,9 +42,10 @@ This arcade table has been sitting in a garage in the middle of humid hot Louisi
   <img src="https://github.com/user-attachments/assets/e1e153ee-cc45-4dac-b726-879dfacaf947" width="48%" height="48%" alt="Right Image">
 </p> 
 
-# Rust Removal
+# Rust Removal and Veneer + Wood Repair
 The metal parts of the arcade table were very rusted and took some time to remove most of it without sacrificing the original paint. I used WD-40, wirebrush, emery cloth, and sandpaper to remove the rust. While for some pieces the chrome was partly removed, the new brushed metal finish already looks a lot better than when I got started. 
 
+For the veneer and wood, I used mineral oil to wipe to restore the original shine. As you can see in the right photo, where the left side has mineral oil and the right side does not. It made a huge difference in the finish quality. 
 <p align="left">
   <img src="https://github.com/user-attachments/assets/e7ae5ce8-9ac2-4c14-8031-97e53b604219" width="48%" height="48%" alt="Left Image">
   <img src="https://github.com/user-attachments/assets/67b76196-5941-4a8b-bdd0-507564f13faf" width="48%" height="48%" alt="Right Image">
@@ -65,6 +66,67 @@ Since the screen has HDMI, this allows me to hook up any console or computer to 
 
 ![IMG_4855](https://github.com/user-attachments/assets/9e74c321-6e4f-4541-88be-851fa443a24b)
 
+# Adding Neopixel RGB Lights and Salvaging Original Hardware
+## The Idea
+For the restoration, I decided to take another step to making this aracde table truly special. I added individually-addressable LED strips to the perimeter as an underglow with an ESP32 for custom effects. As I wanted to keep everything looking as original as possible, I used the eight original buttons and number dials on the side of the unit to control RGB presets. 
 
+## RGB Strip
+The RGB strip uses the WS2812 RGB LEDs that use a common data bus to communicate and determine how to behave. The way this works is the ESP 32 sends out a stream of 24 bit data in the form of. Where each bit can be a 1 or 0.
+
+![Green](https://img.shields.io/badge/GGGGGGGG-00FF00?style=flat&logo=)
+![Red](https://img.shields.io/badge/RRRRRRRR-FF0000?style=flat&logo=)
+![Blue](https://img.shields.io/badge/BBBBBBBB-0000FF?style=flat&logo=)
+
+The LED will read the first 24 bits of data that it recieves and stores it in its data latch, and then sends out the remaining data to the next LED and so on. 
+
+For example, say that you have three RGB LEDs and you want to light up the third one red only. The controller would need to send out three packets of 24 bit data with this included data. 
+
+### Packet 1
+![Green](https://img.shields.io/badge/00000000-00FF00?style=flat&logo=)
+![Red](https://img.shields.io/badge/00000000-FF0000?style=flat&logo=)
+![Blue](https://img.shields.io/badge/00000000-0000FF?style=flat&logo=)
+
+### Packet 2
+![Green](https://img.shields.io/badge/00000000-00FF00?style=flat&logo=)
+![Red](https://img.shields.io/badge/00000000-FF0000?style=flat&logo=)
+![Blue](https://img.shields.io/badge/00000000-0000FF?style=flat&logo=)
+
+### Packet 3
+![Green](https://img.shields.io/badge/00000000-00FF00?style=flat&logo=)
+![Red](https://img.shields.io/badge/11111111-FF0000?style=flat&logo=)
+![Blue](https://img.shields.io/badge/00000000-0000FF?style=flat&logo=)
+
+The controller will send out the three packets of data as a chain. 
+- RGB 1 will store the first 24 bits of all 0's and carry
+- RGB 2 will store the second 24 bits of all 0's and carry
+- RGB 3 will store the third 24 bits of ![Green](https://img.shields.io/badge/00000000-00FF00?style=flat&logo=)
+![Red](https://img.shields.io/badge/11111111-FF0000?style=flat&logo=)
+![Blue](https://img.shields.io/badge/00000000-0000FF?style=flat&logo=) (or G=0, R=255, B=0 in decimal) to light up red
+
+As you'd probably imagine, the complexity ramps up quickly if you want to program more vibrant effects. Though, companies and people like like Adafruit came up with a library to simplify the process called   [NeoPixel](https://learn.adafruit.com/adafruit-neopixel-uberguide/the-magic-of-neopixels). 
+
+This simplifies the process of programming to just calling 
+
+strip.setPixelColor(index, byte red, byte green, byte blue); 
+
+To set color for a certain LED. 
+
+
+
+Other alternatives include [FastLED](https://fastled.io/). , but for my project, NeoPixel worked just fine. 
+
+
+## Number Dial
+The number dials on the side of the machine comprise of a solenoid valve that you apply a short pulse to advance the number. The display itself is fully mechanical and is self-carrying. To control solenoids, these required 24 volts DC pulse to flip to the next number. So, I connected a relay board that works off of 5V logic, added a UF4007 diode to the solenoid to prevent current and voltage spikes from damaging the relay, and added a boost converter to convert 5 volts to 24 volts. </br>
+
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/445550db-177d-403d-bed7-c8be23f4c321" width="48%" height="48%" alt="Left Image">
+  <img src="https://github.com/user-attachments/assets/195b06f4-b655-4fa3-9f0a-410649f924b6" width="48%" height="48%" alt="Right Image">
+</p> 
+
+![image](https://github.com/user-attachments/assets/70c0a905-1198-4e68-b87a-f6b80c97f8cf)
+
+
+## ESP32 Code
 
 

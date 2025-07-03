@@ -125,7 +125,7 @@ Keep in mind the UI is not laggy in real life, I just used a gif for the reposit
 
 
 ## Number Dial
-The number dials on the side of the machine comprise of a solenoid valve that you apply a short pulse to advance the number. The display itself is fully mechanical and is self-carrying. To control solenoids, these required 24 volts DC pulse to flip to the next number. So, I connected a relay board that works off of 5V logic, added a UF4007 diode to the solenoid to prevent current and voltage spikes from damaging the relay, and added a boost converter to convert 5 volts to 24 volts. Only one of the three worked so I decided to make use of it by incrementing when an RGB preset button is pressed.</br>
+The number dials on the side of the machine comprise of a solenoid valve that you apply a short pulse to advance the number. The display itself is fully mechanical and is self-carrying. To control solenoids, these required 24 volts DC pulse to flip to the next number. So, I connected a relay board that works off of 5V logic, added a UF4007 diode to the solenoid to prevent voltage spikes from damaging the relay, and added a boost converter to convert 5 volts to 24 volts. Only one of the three worked so I decided to make use of it by incrementing when an RGB preset button is pressed.</br>
 
 <p align="left">
   <img src="https://github.com/user-attachments/assets/445550db-177d-403d-bed7-c8be23f4c321" width="48%" height="48%" alt="Left Image">
@@ -133,6 +133,7 @@ The number dials on the side of the machine comprise of a solenoid valve that yo
 </p> 
 
 ![image](https://github.com/user-attachments/assets/70c0a905-1198-4e68-b87a-f6b80c97f8cf)
+![Without UF4007](https://github.com/user-attachments/assets/5d0608c8-9111-4f8b-b30f-61d2cb374b46)
 
 # Software for ESP32
 I used VSCode and PlatformIO for development of the HTML file and Arduino code. PlatformIO allows me to easily debug and test new changes though their included frameworks. The code is very extensive so check out the source code in my repository to see explanantions and content. 

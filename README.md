@@ -6,9 +6,10 @@
 </p> 
 
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/f1d13faf-3c98-4a0a-b52b-2aa5d0bb6d20" width="48%" height="48%" alt="Left Image">
-  <img src="https://github.com/user-attachments/assets/a1a6ffd5-c1a3-4667-8e15-ee5b5a5d6a0a" width="48%" height="48%" alt="Right Image">
+  <img src="https://github.com/user-attachments/assets/84887611-2b4f-4c67-9fd6-cd107a4245a8" width="48%" height="48%" alt="Left Image">
+  <img src="https://github.com/user-attachments/assets/deb3170c-8688-4767-9e1f-56e8b16b0a88" width="48%" height="48%" alt="Right Image">
 </p> 
+
 
 # About
 Being a big fan of retro games and arcade games, I decided to take on the challenge to fully restore a defunct, abandoned 1980's Corona arcade cocktail table machine. Since a lot of essential parts were missing including a screen, game board, and other controllers, I decided to use a Raspberry Pi 3 loaded with Lakka to bring new life to this vintage machine. This upgrade gives me the ability to play thousands of old games from SNES, N64, Gameboy, NES, Amiga, MAME, and countless other consoles and computers all while keeping the original vibe. 
@@ -71,11 +72,15 @@ Since the screen has HDMI, this allows me to hook up any console or computer to 
 For the restoration, I decided to take another step to making this aracde table truly special. I added individually-addressable LED strips to the perimeter as an underglow with an ESP32 for custom effects. As I wanted to keep everything looking as original as possible, I used the eight original buttons and number dials on the side of the unit to control RGB presets. 
 
 ## RGB Strip
-The RGB strip uses the WS2812 RGB LEDs that use a common data bus to communicate and determine how to behave. The way this works is the ESP 32 sends out a stream of 24 bit data in the form of. Where each bit can be a 1 or 0.
+The RGB strip uses the WS2812 RGB LEDs that use a common data bus to communicate and determine how to behave. The way this works is the ESP 32 sends out a stream of 24 bit data in the form of,
+
+
 
 ![Green](https://img.shields.io/badge/GGGGGGGG-00FF00?style=flat&logo=)
 ![Red](https://img.shields.io/badge/RRRRRRRR-FF0000?style=flat&logo=)
 ![Blue](https://img.shields.io/badge/BBBBBBBB-0000FF?style=flat&logo=)
+
+Where each bit can be a 1 or 0.
 
 The LED will read the first 24 bits of data that it recieves and stores it in its data latch, and then sends out the remaining data to the next LED and so on. 
 
@@ -132,11 +137,16 @@ The number dials on the side of the machine comprise of a solenoid valve that yo
   <img src="https://github.com/user-attachments/assets/195b06f4-b655-4fa3-9f0a-410649f924b6" width="48%" height="48%" alt="Right Image">
 </p> 
 
-![image](https://github.com/user-attachments/assets/70c0a905-1198-4e68-b87a-f6b80c97f8cf)
+
+
+## Solenoid Design Issues and How to Fix Them
+A solenoid is essentially an inductor and has the same trends as an inductor when turned off. When an inductor turns off after being in a steady state, the voltage and current will spike significantly and easily damage electronics connected to it. To fix this, a common solution is to add a fast recovery diode that will dissipate the inductive spike that occurs. Any fast recovery diode is good in this case, just make sure you take into account voltage and current ratings.
+
 ![Without UF4007](https://github.com/user-attachments/assets/5d0608c8-9111-4f8b-b30f-61d2cb374b46)
 
+![image](https://github.com/user-attachments/assets/70c0a905-1198-4e68-b87a-f6b80c97f8cf)
 # Software for ESP32
-I used VSCode and PlatformIO for development of the HTML file and Arduino code. PlatformIO allows me to easily debug and test new changes though their included frameworks. The code is very extensive so check out the source code in my repository to see explanantions and content. 
+I used VSCode and PlatformIO for development of the HTML file and Arduino code. PlatformIO allows me to easily debug and test new changes though their included frameworks. The code is very extensive so check out the source code in my repository to see explanantions and content. Feel free to download, add, or modify my included presets!
 
 ## How To Upload Code Using PlatformIO and SPIFFS
 SPIFFS is a file system that allows you to upload HTML, CSS, JS, config files, and more that you need for your application. For this project, this came in handy to develop an HTML webpage seperate from the Arduino backend and allowed for easy expansion of features.

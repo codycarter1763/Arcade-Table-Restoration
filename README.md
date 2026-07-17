@@ -63,7 +63,7 @@ For the restoration, I decided to go with Lakka, a linux distribution built on t
 # Retrofitting a Monitor
 For the monitor, I used an old Dell monitor that I salvaged from a friend of mine for this build. It is just the right size to fill the space where the original CRT screen was and makes for a lightweight addition. For mounting, I used 2x4 pieces of wood cut to length to mount onto the CRT screen mounting holes. I then used velcro to secure the screen on for easy removal. 
 
-Since the screen has HDMI, this allows me to hook up any console or computer to the aracde table.
+Since the screen has HDMI, this allows me to hook up any console or computer to the arcade table.
 
 ![IMG_4855](https://github.com/user-attachments/assets/9e74c321-6e4f-4541-88be-851fa443a24b)
 
